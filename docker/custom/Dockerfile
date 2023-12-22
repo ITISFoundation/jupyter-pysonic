@@ -84,8 +84,7 @@ RUN jupyter serverextension enable voila && \
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
 RUN MPLBACKEND=Agg .venv/bin/python -c "import matplotlib.pyplot" 
 
-#RUN fix-permissions /home/$NB_USER
-RUN fix-permissions /home/$NB_USER/.local
+RUN fix-permissions /home/$NB_USER
 
 # copy README and CHANGELOG
 COPY --chown=$NB_UID:$NB_GID CHANGELOG.md ${NOTEBOOK_BASE_DIR}/CHANGELOG.md
