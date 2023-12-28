@@ -18,6 +18,8 @@ RUN apt-get update && \
   dvipng \
   gosu \
   bc \
+  gcc \
+  g++ \
   ghostscript \
   texlive-xetex \
   texlive-fonts-recommended \
@@ -27,55 +29,23 @@ RUN apt-get update && \
   unzip \
   git-lfs \ 
   fonts-freefont-otf \
+  libx11-dev \ 
+  bison \
+  flex \
+  automake \
+  pkg-config \
+  libfreetype-dev \
+  libpng-dev \
+  libtool \ 
+  libxext-dev \
+  libncurses-dev \
+  xfonts-100dpi \
+  cython3 \
+  libopenmpi-dev \
+  make \
+  zlib1g-dev \
   && \
   apt-get clean && rm -rf /var/lib/apt/lists/* 
-
-# Install the pysonic repo list and key
-# https://pysonic.cs.ox.ac.uk/trac/wiki/InstallGuides/UbuntuPackage
-RUN echo "deb http://www.cs.ox.ac.uk/pysonic/ubuntu focal/" >> /etc/apt/sources.list.d/pysonic.list && \
-  apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 422C4D99
-
-RUN pip --no-cache --quiet install --upgrade \
-  pip \
-  setuptools \
-  wheel
-
-
-
-# Fix CMake warnings: https://github.com/autowarefoundation/autoware/issues/795
-RUN update-alternatives --install /usr/bin/vtk vtk /usr/bin/vtk7 7
-
-# Install TextTest for regression testing (this requires pygtk)
-RUN pip install texttest
-ENV TEXTTEST_HOME /usr/local/bin/texttest
-
-
-# Allow pysonic_DIR to be set at build time if desired
-ARG pysonic_DIR="/home/jovyan/pysonic"
-ENV pysonic_DIR=${pysonic_DIR}
-
-
-# Add scripts
-COPY --chown=$NB_UID:$NB_UID kernels/pysonic/scripts "${pysonic_DIR}/scripts"
-# WORKDIR ${pysonic_DIR}
-ENV PATH "${pysonic_DIR}/scripts:${PATH}"
-
-# Set environment variables
-# RUN source /home/pysonic/scripts/set_env_vars.sh
-ENV pysonic_SOURCE_DIR="${pysonic_DIR}/src" \
-    pysonic_BUILD_DIR="${pysonic_DIR}/lib" \
-    pysonic_PROJECTS_DIR="${pysonic_DIR}/src/projects" \
-    pysonic_TEST_OUTPUT="${pysonic_DIR}/testoutput"
-
-# CMake environment variables
-ARG CMAKE_BUILD_TYPE="Release"
-ARG pysonic_ERROR_ON_WARNING="OFF"
-ARG pysonic_UPDATE_PROVENANCE="OFF"
-ENV CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
-    pysonic_ERROR_ON_WARNING=${pysonic_ERROR_ON_WARNING} \
-    pysonic_UPDATE_PROVENANCE=${pysonic_UPDATE_PROVENANCE}
-
-USER $NB_UID
 
 # --------------------------------------------------------------------
 
@@ -96,13 +66,16 @@ RUN python3 -m venv .venv &&\
   && \
   jupyter kernelspec list
 
+
 # copy and resolve dependecies to be up to date
 COPY --chown=$NB_UID:$NB_GID kernels/pysonic/requirements.txt ${NOTEBOOK_BASE_DIR}/requirements.txt
 COPY --chown=$NB_UID:$NB_GID kernels/pysonic/logo-* /logos/
 
+# Install requirements, remove default python logo and add custom logos
 RUN .venv/bin/pip --no-cache install pip-tools && \
   .venv/bin/pip --no-cache install -r ${NOTEBOOK_BASE_DIR}/requirements.txt && \
-  && cp -f /logos/logo-* .local/share/jupyter/kernels/pysonic
+  cp -f /logos/logo-* ${HOME}/.local/share/jupyter/kernels/pysonic && \
+  rm ${HOME}/.local/share/jupyter/kernels/pysonic/logo-svg.svg
 
 RUN jupyter serverextension enable voila && \
   jupyter server extension enable voila
@@ -120,14 +93,22 @@ COPY --chown=$NB_UID:$NB_GID README.ipynb ${NOTEBOOK_BASE_DIR}/README.ipynb
 RUN chmod gu-w ${NOTEBOOK_BASE_DIR}/CHANGELOG.md && \
   chmod gu-w ${NOTEBOOK_BASE_DIR}/requirements.txt
 
+# Compile the MOD files
+RUN source .venv/bin/activate && \
+    cd /home/jovyan/.venv/src/morphosonic/MorphoSONIC/nmodl && \
+    nrnivmodl
+
 RUN mkdir --parents "/home/${NB_USER}/.virtual_documents" && \
   chown --recursive "$NB_USER" "/home/${NB_USER}/.virtual_documents"
 ENV JP_LSP_VIRTUAL_DIR="/home/${NB_USER}/.virtual_documents"
 
+# TODO, move up
+RUN cp -f /logos/logo-* ${HOME}/.local/share/jupyter/kernels/pysonic
+
 # Copying boot scripts
 COPY --chown=$NB_UID:$NB_GID docker /docker
 
-#RUN echo 'export PATH="/home/${NB_USER}/.venv/bin:$PATH"' >> "/home/${NB_USER}/.bashrc"
+RUN echo 'export PATH="/home/${NB_USER}/.venv/bin:$PATH"' >> "/home/${NB_USER}/.bashrc"
 
 EXPOSE 8888
 

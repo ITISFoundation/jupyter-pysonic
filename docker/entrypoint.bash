@@ -66,9 +66,13 @@ else
     chown --recursive "$NB_USER" "${DY_SIDECAR_PATH_OUTPUTS}"
 fi
 
-mv "${NOTEBOOK_BASE_DIR}/README.ipynb" "${NOTEBOOK_BASE_DIR}/workspace/README.ipynb" || true
+if [ ! -f "${NOTEBOOK_BASE_DIR}/workspace/README.ipynb" ] # Allow users to modify the README.ipynb, so do not copy if it already exists
+then
+    mv "${NOTEBOOK_BASE_DIR}/README.ipynb" "${NOTEBOOK_BASE_DIR}/workspace/README.ipynb" || true
+fi 
 
-echo "Removing write permissions from users in placed where they are not allowed to write:"
+
+echo "Removing write permissions from users in places where they are not allowed to write:"
 echo "- /home/${NB_USER}/work"
 chmod gu-w "/home/${NB_USER}/work"
 

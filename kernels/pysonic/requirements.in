@@ -1,21 +1,15 @@
-# math-base
-h5py
-matplotlib
-numpy
-plotly
-scikit-learn
-scipy
-sympy
+# PySONIC and MorphoSONIC
+#-e git+https://github.com/tjjlemaire/PySONIC.git@6ee5e571edba358dbfa8436c066846fc5d787632#egg=pysonic
+#-e git+https://github.com/tjjlemaire/MorphoSONIC.git@19c86216da7939065bc6e719c03d41024a21c3ca#egg=morphosonic
+-e git+https://github.com/tjjlemaire/MorphoSONIC.git#egg=morphosonic
+-e git+https://github.com/tjjlemaire/PySONIC.git#egg=pysonic
 
-pandas
-# optional extensions for pandas
-openpyxl
-xlrd
-xlwt
+# math-base
+numpy
 
 # jupyter-extensions
 ipyevents
-ipympl
+#ipympl
 ipywidgets
 jupyterlab
 jupyterlab_latex
@@ -26,7 +20,5 @@ python-lsp-server[all]
 voila
 watchdog[watchmedo]
 
-
-# PySONIC and MorphoSONIC
--e git+https://github.com/tjjlemaire/PySONIC.git@6ee5e571edba358dbfa8436c066846fc5d787632
--e git+https://github.com/tjjlemaire/MorphoSONIC.git@19c86216da7939065bc6e719c03d41024a21c3ca
+# Required by MorphoSONIC
+seaborn

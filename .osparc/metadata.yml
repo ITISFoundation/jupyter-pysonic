@@ -3,7 +3,12 @@ key: simcore/services/dynamic/jupyter-pysonic
 type: dynamic
 integration-version: 1.0.0
 version: 2.0.0
-description: JupyterLab with [PySONIC](https://github.com/tjjlemaire/PySONIC) and [MorphoSONIC](https://github.com/tjjlemaire/PySONIC) for simulation of ultrasound neurostimulation, authored by Théo Lemaire.
+description: 
+  JupyterLab with [PySONIC](https://github.com/tjjlemaire/PySONIC) and [MorphoSONIC](https://github.com/tjjlemaire/PySONIC) for simulation of ultrasound neurostimulation, authored by Théo Lemaire.
+  <br><br>
+  If this code base contributes to a project that leads to a scientific publication, please acknowledge this fact by citing
+  * Lemaire, T., Neufeld, E., Kuster, N., and Micera, S. (2019). Understanding ultrasound neuromodulation using a computationally efficient and interpretable model of intramembrane cavitation. J. Neural Eng. [DOI](https://doi.org/10.1088/1741-2552/ab1685)
+  * Lemaire, T., Vicari E., Neufeld, E., Kuster, N., and Micera, S. (2021). MorphoSONIC, a morphologically structured intramembrane cavitation model reveals fiber-specific neuromodulation by ultrasound. iScience [DOI](https://doi.org/10.1016/j.isci.2021.103085)
 contact: iavarone@itis.swiss
 thumbnail: https://c4scdn.ch/file/data/qftqsouszz3zamayyj5b/PHID-FILE-5ymwt2c3rntplskvf3tp/profile
 authors:
