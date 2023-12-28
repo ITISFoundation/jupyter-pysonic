@@ -1,5 +1,5 @@
 # Jupyter PySONIC
-This repository packages PySONIC and MorphoSONIC in a JupyterLab environment on o²S²PARC.
+This repository packages PySONIC and MorphoSONIC in a JupyterLab-based Service on o²S²PARC.
 
 JupyterLab with [PySONIC](https://github.com/tjjlemaire/PySONIC) and [MorphoSONIC](https://github.com/tjjlemaire/MorphoSONIC) for simulation of ultrasound neurostimulation, authored by Théo Lemaire.
 
