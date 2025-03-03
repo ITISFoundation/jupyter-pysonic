@@ -1,11 +1,10 @@
 # PySONIC and MorphoSONIC
-#-e git+https://github.com/tjjlemaire/PySONIC.git@6ee5e571edba358dbfa8436c066846fc5d787632#egg=pysonic
-#-e git+https://github.com/tjjlemaire/MorphoSONIC.git@19c86216da7939065bc6e719c03d41024a21c3ca#egg=morphosonic
--e git+https://github.com/tjjlemaire/MorphoSONIC.git#egg=morphosonic
--e git+https://github.com/tjjlemaire/PySONIC.git#egg=pysonic
+-e git+https://github.com/tjjlemaire/PySONIC.git@aff881012b83731e7139aa1994f5dff358525700#egg=pysonic
+-e git+https://github.com/tjjlemaire/MorphoSONIC.git@64a0a2325ec8a1cfa90ce5595ea93301e4a1ff91#egg=morphosonic
 
-# math-base
-numpy
+#  matplotlib requirements
+contourpy==1.3.0
+matplotlib==3.9.4
 
 # jupyter-extensions
 ipyevents
@@ -19,6 +18,5 @@ jupyterlab-lsp
 python-lsp-server[all]
 voila
 watchdog[watchmedo]
-
 # Required by MorphoSONIC
 seaborn

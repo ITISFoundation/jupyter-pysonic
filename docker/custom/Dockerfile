@@ -44,6 +44,7 @@ RUN apt-get update && \
   libopenmpi-dev \
   make \
   zlib1g-dev \
+  libatlas-base-dev \
   && \
   apt-get clean && rm -rf /var/lib/apt/lists/* 
 
@@ -76,6 +77,7 @@ RUN .venv/bin/pip --no-cache install pip-tools && \
   .venv/bin/pip --no-cache install -r ${NOTEBOOK_BASE_DIR}/requirements.txt && \
   cp -f /logos/logo-* ${HOME}/.local/share/jupyter/kernels/pysonic && \
   rm ${HOME}/.local/share/jupyter/kernels/pysonic/logo-svg.svg
+RUN .venv/bin/pip --no-cache install matplotlib
 
 RUN jupyter serverextension enable voila && \
   jupyter server extension enable voila
@@ -95,8 +97,8 @@ RUN chmod gu-w ${NOTEBOOK_BASE_DIR}/CHANGELOG.md && \
 
 # Compile the MOD files
 RUN source .venv/bin/activate && \
-    cd /home/jovyan/.venv/src/morphosonic/MorphoSONIC/nmodl && \
-    nrnivmodl
+  cd /home/jovyan/.venv/src/morphosonic/MorphoSONIC/nmodl && \
+  nrnivmodl
 
 RUN mkdir --parents "/home/${NB_USER}/.virtual_documents" && \
   chown --recursive "$NB_USER" "/home/${NB_USER}/.virtual_documents"
