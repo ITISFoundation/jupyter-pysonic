@@ -31,7 +31,7 @@ devenv: .venv  ## create a python virtual environment with tools to dev, run and
 # Upgrades and tracks python packages versions installed in the service ---------------------------------
 requirements: devenv ## runs pip-tools to build requirements.txt that will be installed in the JupyterLab
 	# freezes requirements
-	pip-compile kernels/pysonic/requirements.in --resolver=backtracking --output-file kernels/pysonic/requirements.txt
+	pip-compile kernels/pysonic/requirements.in --output-file kernels/pysonic/requirements.txt
 
 # Builds new service version ----------------------------------------------------------------------------
 define _bumpversion
