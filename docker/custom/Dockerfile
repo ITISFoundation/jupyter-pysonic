@@ -58,7 +58,7 @@ USER root
 WORKDIR ${HOME}
 
 RUN python3 -m venv .venv &&\
-  .venv/bin/pip --no-cache --quiet install --upgrade pip wheel setuptools &&\
+  .venv/bin/pip --no-cache --quiet install --upgrade pip wheel 'setuptools<75' &&\
   .venv/bin/pip --no-cache --quiet install ipykernel &&\
   .venv/bin/python -m ipykernel install \
   --user \
