@@ -1,6 +1,5 @@
-# PySONIC and MorphoSONIC
--e git+https://github.com/tjjlemaire/PySONIC.git@aff881012b83731e7139aa1994f5dff358525700#egg=pysonic
--e git+https://github.com/tjjlemaire/MorphoSONIC.git@64a0a2325ec8a1cfa90ce5595ea93301e4a1ff91#egg=morphosonic
+# NOTE: PySONIC and MorphoSONIC are pre-cloned and installed in the Dockerfile
+# at pinned commits (see docker/custom/Dockerfile) to work around Git LFS issues.
 
 #  matplotlib requirements
 contourpy==1.3.0

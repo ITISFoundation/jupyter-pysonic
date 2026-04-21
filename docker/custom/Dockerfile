@@ -73,8 +73,17 @@ COPY --chown=$NB_UID:$NB_GID kernels/pysonic/requirements.txt ${NOTEBOOK_BASE_DI
 COPY --chown=$NB_UID:$NB_GID kernels/pysonic/logo-* /logos/
 
 # Install requirements, remove default python logo and add custom logos
+# NOTE: PySONIC uses Git LFS for ~800MB of lookup tables. pip's partial clone
+# (--filter=blob:none) combined with LFS causes git checkout to hang indefinitely.
+# Fix: pre-clone repos with full clone + LFS skip, then pip install from local paths.
+RUN GIT_LFS_SKIP_SMUDGE=1 git clone --quiet https://github.com/tjjlemaire/MorphoSONIC.git ${HOME}/.venv/src/morphosonic && \
+  cd ${HOME}/.venv/src/morphosonic && git checkout -q 64a0a2325ec8a1cfa90ce5595ea93301e4a1ff91 && \
+  GIT_LFS_SKIP_SMUDGE=1 git clone --quiet https://github.com/tjjlemaire/PySONIC.git ${HOME}/.venv/src/pysonic && \
+  cd ${HOME}/.venv/src/pysonic && git checkout -q aff881012b83731e7139aa1994f5dff358525700
 RUN .venv/bin/pip --no-cache install pip-tools && \
+  .venv/bin/pip --no-cache install -e ${HOME}/.venv/src/morphosonic -e ${HOME}/.venv/src/pysonic && \
   .venv/bin/pip --no-cache install -r ${NOTEBOOK_BASE_DIR}/requirements.txt && \
+  cd ${HOME}/.venv/src/pysonic && git lfs pull && \
   cp -f /logos/logo-* ${HOME}/.local/share/jupyter/kernels/pysonic && \
   rm ${HOME}/.local/share/jupyter/kernels/pysonic/logo-svg.svg
 RUN .venv/bin/pip --no-cache install matplotlib

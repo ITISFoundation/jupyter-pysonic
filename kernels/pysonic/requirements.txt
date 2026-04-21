@@ -4,10 +4,9 @@
 #
 #    pip-compile --output-file=kernels/pysonic/requirements.txt kernels/pysonic/requirements.in
 #
--e git+https://github.com/tjjlemaire/MorphoSONIC.git@64a0a2325ec8a1cfa90ce5595ea93301e4a1ff91#egg=morphosonic
-    # via -r kernels/pysonic/requirements.in
--e git+https://github.com/tjjlemaire/PySONIC.git@aff881012b83731e7139aa1994f5dff358525700#egg=pysonic
-    # via -r kernels/pysonic/requirements.in
+# NOTE: MorphoSONIC and PySONIC are pre-cloned and installed in the Dockerfile
+# at pinned commits (see docker/custom/Dockerfile) to work around Git LFS issues.
+#
 anyio==4.2.0
     # via jupyter-server
 argon2-cffi==23.1.0
